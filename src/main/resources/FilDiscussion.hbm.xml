@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 fevr. 2015 16:41:13 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.forum.entity.FilDiscussion" table="fil_discussion" catalog="forum_db">
+        <id name="idFilDiscussion" type="java.lang.Integer">
+            <column name="id_fil_discussion" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.forum.entity.User" fetch="select">
+            <column name="id_user" not-null="true" />
+        </many-to-one>
+        <many-to-one name="category" class="com.forum.entity.Category" fetch="select">
+            <column name="id_category" not-null="true" />
+        </many-to-one>
+        <property name="subject" type="string">
+            <column name="subject" not-null="true" />
+        </property>
+        <property name="contents" type="string">
+            <column name="contents" length="65535" not-null="true" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="50" not-null="true" />
+        </property>
+           <property name="dateDiscussion" type="timestamp">
+            <column name="date_discussion" length="0" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" not-null="true" />
+        </property>
+        <set name="comments" table="comment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_fil_discussion" not-null="true" />
+            </key>
+            <one-to-many class="com.forum.entity.Comment" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+ 
+     
+  
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/forum_db" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
+    </bean> 
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+ 
+        <property name="configLocation" >
+            <value>classpath:hibernate.cfg.xml</value>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+        <property name="configurationClass">
+            <value>org.hibernate.cfg.AnnotationConfiguration</value>
+        </property>   
+    </bean> 
+  
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>  
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="com.forum.entity,com.forum.dao,com.forum.services" />
+    
+    <!--injection des dependance entre les deux couche Services et Dao-->
+    
+    <!--category-->
+    <bean class="com.forum.dao.CategoryDaoImp" id="categoryDaoImpBean" init-method="init"/>
+    <bean class="com.forum.services.CategoryMetierImp" id="CategorieService" init-method="init">
+        <property name="categoryDao" ref="categoryDaoImpBean"/>
+    </bean>
+    
+        <!--Fil_Discussion-->
+    <bean class="com.forum.dao.FilDiscussionDaoImp" id="filDiscussionDaoImpBean" init-method="init"/>
+    <bean class="com.forum.services.FilDiscussionMetierImp" id="FilDiscussionService" init-method="init">
+        <property name="filDiscussionDao" ref="filDiscussionDaoImpBean"/>
+    </bean>
+    
+            <!--Comment-->
+    <bean class="com.forum.dao.CommentDaoImp" id="commentDaoImpBean" init-method="init"/>
+    <bean class="com.forum.services.CommentMetierImp" id="commentMetier" init-method="init">
+        <property name="commentDao" ref="commentDaoImpBean"/>
+    </bean>
+    
+                <!--User-->
+    <bean class="com.forum.dao.UserDaoImp" id="userDaoImpBean" init-method="init"/>
+    <bean class="com.forum.services.UserMetierImp" id="userMetier" init-method="init">
+        <property name="userDao" ref="userDaoImpBean"/>
+    </bean>
+
+    
+</beans>

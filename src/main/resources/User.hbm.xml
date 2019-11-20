@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 fevr. 2015 16:41:13 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.forum.entity.User" table="user" catalog="forum_db">
+        <id name="idUser" type="java.lang.Integer">
+            <column name="id_user" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="role" class="com.forum.entity.Role" fetch="select">
+            <column name="id_role" not-null="true" />
+        </many-to-one>
+        <property name="login" type="string">
+            <column name="login" length="50" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="50" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" not-null="true" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="50" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="50" not-null="true" />
+        </property>
+        <property name="birthdate" type="date">
+            <column name="birthdate" length="0" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" not-null="true" />
+        </property>
+        <set name="comments" table="comment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_user" not-null="true" />
+            </key>
+            <one-to-many class="com.forum.entity.Comment" />
+        </set>
+        <set name="filDiscussions" table="fil_discussion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_user" not-null="true" />
+            </key>
+            <one-to-many class="com.forum.entity.FilDiscussion" />
+        </set>
+        <set name="photoUserProfiles" table="photo_user_profile" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_user" not-null="true" />
+            </key>
+            <one-to-many class="com.forum.entity.PhotoUserProfile" />
+        </set>
+    </class>
+</hibernate-mapping>

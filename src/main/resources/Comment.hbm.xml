@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 fevr. 2015 16:41:13 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.forum.entity.Comment" table="comment" catalog="forum_db">
+        <id name="idComment" type="java.lang.Integer">
+            <column name="id_comment" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.forum.entity.User" fetch="select">
+            <column name="id_user" not-null="true" />
+        </many-to-one>
+        <many-to-one name="filDiscussion" class="com.forum.entity.FilDiscussion" fetch="select">
+            <column name="id_fil_discussion" not-null="true" />
+        </many-to-one>
+        <property name="contents" type="string">
+            <column name="contents" length="65535" not-null="true" />
+        </property>
+        <property name="dateComment" type="timestamp">
+            <column name="date_comment" length="0" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="20" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
